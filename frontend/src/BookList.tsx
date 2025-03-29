@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Book } from './types/Book';
 
-function BookList() {
+function BookList({selectedCategories} : {selectedCategories: string[] }) {
     const [books, setBooks] = useState<Book[]>([]);
     const [pageSize, setPageSize] = useState<number>(10);
     const [pageNum, setPageNum] = useState<number>(1);
@@ -14,7 +14,12 @@ function BookList() {
 
     useEffect(() => {
         const fetchBooks = async () => {
-            const response = await fetch(`https://localhost:5000/bezos/AllBooks?pageHowMany=${pageSize}&pageNum=${pageNum}`, 
+
+            const categoryParams = selectedCategories
+            .map((cat) => `bookTypes=${encodeURIComponent}`)
+            .join('&');
+
+            const response = await fetch(`https://localhost:5000/bezos/AllBooks?pageHowMany=${pageSize}&pageNum=${pageNum}${selectedCategories.length ? `&${categoryParams}` : ''}`, 
             {
                 credentials: 'include',
             });
@@ -34,8 +39,6 @@ function BookList() {
 
     return (
         <>
-            <h1>Available books</h1>
-            <br />
             {sortedBooks.map((b) => 
                 <div id="projectCard" className="card" key={b.bookID}>
                     <h3 className="card-title">{b.title}</h3>

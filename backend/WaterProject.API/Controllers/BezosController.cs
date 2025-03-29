@@ -36,13 +36,16 @@ namespace BezosBase.API.Controllers
 
         }
 
-        //[HttpGet("FunctionalProjects")]
-        //public IEnumerable<Project> GetFunctionalProjects()
+        [HttpGet("GetBookCategories")]
+        public IActionResult GetBookCategories ()
+        {
+            var bookCategories = _bezosContext.Books
+                .Select(b => b.Category)
+                .Distinct()
+                .ToList();
 
-        //{
-        //    var something = _bezosContext.Books.Where(p => p.ProjectFunctionalityStatus == "Functional").ToList();
-        //    return something;
-        //}
+            return Ok(bookCategories);
+        }
 
 
  
