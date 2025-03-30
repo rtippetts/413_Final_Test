@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Book } from './types/Book';
+import { useNavigate } from 'react-router-dom';
 
 function BookList({selectedCategories} : {selectedCategories: string[] }) {
     const [books, setBooks] = useState<Book[]>([]);
@@ -7,6 +8,7 @@ function BookList({selectedCategories} : {selectedCategories: string[] }) {
     const [pageNum, setPageNum] = useState<number>(1);
     const [totalItems, setTotalItems] = useState<number>(0);
     const [totalPages, setTotalPages] = useState<number>(0);
+    const navigate = useNavigate();
 
     // Sorting states
     const [ascending, setAscending] = useState<boolean>(true);
@@ -16,7 +18,7 @@ function BookList({selectedCategories} : {selectedCategories: string[] }) {
         const fetchBooks = async () => {
 
             const categoryParams = selectedCategories
-            .map((cat) => `bookTypes=${encodeURIComponent}`)
+            .map((cat) => `bookTypes=${encodeURIComponent(cat)}`)
             .join('&');
 
             const response = await fetch(`https://localhost:5000/bezos/AllBooks?pageHowMany=${pageSize}&pageNum=${pageNum}${selectedCategories.length ? `&${categoryParams}` : ''}`, 
@@ -30,7 +32,7 @@ function BookList({selectedCategories} : {selectedCategories: string[] }) {
         };
         
         fetchBooks();
-    }, [pageSize, pageNum]);
+    }, [pageSize, pageNum, selectedCategories]);
 
     // Apply sorting only if sorting is enabled
     const sortedBooks = enableSorting 
@@ -50,6 +52,8 @@ function BookList({selectedCategories} : {selectedCategories: string[] }) {
                             <li><strong>Classification/Category:</strong> {b.classification}/{b.category}</li>
                             <li><strong>Number of Pages:</strong> {b.pageCount}</li>
                             <li><strong>Price:</strong> {b.price}</li>
+
+                            <button className="btn btn-success" onClick={() => navigate(`/purchase/${b.title}/${b.price}/${b.bookID}`)} >Purchase</button>
                         </ul>    
                     </div>
                 </div>
