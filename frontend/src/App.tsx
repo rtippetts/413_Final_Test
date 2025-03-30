@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import PurchasePage from './pages/PurchasePage';
 import CartPage from './pages/CartPage';
 import { CartProvider } from './context/CartContext';
-import "bootstrap/dist/css/bootstrap.min.css";
 
 
 function App() {
