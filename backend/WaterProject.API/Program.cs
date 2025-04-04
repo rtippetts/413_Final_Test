@@ -14,17 +14,26 @@ builder.Services.AddDbContext<BezosDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("BookConnection")));
 
 builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowFrontend",
-        policy =>
-        {
-            policy.WithOrigins("http://localhost:3000")
-                .AllowCredentials()
-                .AllowAnyHeader()
-                .AllowAnyMethod();
+    options.AddPolicy("AllowReactAppBlah",
+    policy => {
+        policy.WithOrigins("http://localhost:3000")
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials();
+    }));
+
+// builder.Services.AddCors(options =>
+// {
+//     options.AddPolicy("AllowFrontend",
+//         policy =>
+//         {
+//             policy.WithOrigins("http://localhost:3000")
+//                 .AllowCredentials()
+//                 .AllowAnyHeader()
+//                 .AllowAnyMethod();
             
-        });
-});
+//         });
+// });
 
 var app = builder.Build();
 
@@ -35,7 +44,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors("AllowFrontend");
+app.UseCors("AllowReactAppBlah");
 
 app.UseHttpsRedirection();
 
