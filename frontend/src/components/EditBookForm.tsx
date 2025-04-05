@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Book } from "../types/Book"
-import { addBook } from "../api/BooksAPI";
+import { addBook, updateBook } from "../api/BooksAPI";
 
 interface EditBookFormProps {
     book: Book;
@@ -17,13 +17,13 @@ const EditBookForm = ({ book, onSuccess, onCancel }: EditBookFormProps) => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        await addBook(formData);
+        await updateBook(formData.bookID, formData);
         onSuccess();
     };
 
     return (
         <form onSubmit={handleSubmit}>
-            <h2>Add New Book</h2>
+            <h2>Update Book Details</h2>
             <label>Book Title: <input type="text" name="title" value={formData.title} onChange={handleChange} /></label>
             <label>Author: <input type="text" name="author" value={formData.author} onChange={handleChange} /></label>
             <label>Category: <input type="text" name="category" value={formData.category} onChange={handleChange} /></label>
@@ -32,7 +32,7 @@ const EditBookForm = ({ book, onSuccess, onCancel }: EditBookFormProps) => {
             <label>Publisher: <input type="text" name="publisher" value={formData.publisher} onChange={handleChange} /></label>
             <label>ISBN: <input type="text" name="isbn" value={formData.isbn} onChange={handleChange} /></label>
             <label>Classification: <input type="text" name="classification" value={formData.classification} onChange={handleChange} /></label>
-            <button type="submit">Add Book</button>
+            <button type="submit">Update Book</button>
             <button type="submit" onClick={onCancel}>Cancel</button>
         </form>
     )

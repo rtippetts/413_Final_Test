@@ -3,10 +3,11 @@
 // } This does the same thing as what is below
 
 import { useEffect, useState } from "react";
-import { fetchBooks } from "../api/BooksAPI";
+import { deleteBook, fetchBooks } from "../api/BooksAPI";
 import { Book } from "../types/Book";
 import Pagination from "../components/Pagination";
 import NewBookForm from "../components/NewBookForm";
+import EditBookForm from "../components/EditBookForm";
 
 const AdminBooksPage = () => {
         
@@ -17,6 +18,7 @@ const AdminBooksPage = () => {
         const [pageNum, setPageNum] = useState<number>(1);
         const [totalPages, setTotalPages] = useState<number>(0);
         const [showForm, setShowForm] = useState(false);
+        const [editingBook, setEditingBook] = useState<Book | null>(null);
         
 
 
@@ -35,6 +37,27 @@ useEffect(() => {
 
     loadBooks();
 }, [pageSize, pageNum]);
+
+    const handleDelete = async (bookID: number) => {
+        const confirmDelete = window.confirm('Are you sure you want to delete this project?');
+    
+        if (!confirmDelete) return;
+
+        try {
+            await deleteBook(bookID);
+            setBooks(books.filter((b) => b.bookID !== bookID));
+        
+    
+    } catch (error) {
+        alert('Failed to delete project. Please try again.')
+    }
+};
+
+
+
+
+
+
 
     if (loading) return <p>Loading Books...</p>;
     if (error) return <p className="text-red-500">Error: {error}</p>;
@@ -64,6 +87,15 @@ useEffect(() => {
               />
             )}
 
+            {editingBook && (
+                <EditBookForm book={editingBook} onSuccess={() => {
+                    setEditingBook(null);
+                    fetchBooks(pageSize, pageNum, []).then((data) => setBooks(data.books))
+                }}
+                onCancel={() => setEditingBook(null)}
+                />
+            )}
+
 
             <table className="table table-bordered table-striped">
                 <thead className="table-dark">
@@ -88,8 +120,16 @@ useEffect(() => {
                                 <td>{b.pageCount}</td>
                                 <td>{b.price}</td>
                                 <td>
-                                    <button className="btn btn-primary btn-sm w-100 mb-1" onClick={() => console.log(`Edit book ${b.bookID}`)}>Edit</button>
-                                    <button className="btn btn-danger btn-sm w-100" onClick={() => console.log(`Delete book ${b.bookID}`)}>Delete</button>
+                                    <button 
+                                    className="btn btn-primary btn-sm w-100 mb-1" 
+                                    onClick={() => setEditingBook(b)}>
+                                        Edit
+                                    </button>
+                                    <button
+                                     className="btn btn-danger btn-sm w-100" 
+                                     onClick={() => handleDelete(b.bookID)}>
+                                        Delete
+                                     </button>
                                 </td>
                             </tr>
                         )
