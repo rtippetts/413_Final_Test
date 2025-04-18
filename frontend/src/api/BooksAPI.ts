@@ -5,7 +5,7 @@ interface FetchBooksResponse {
     totalNumBooks: number;
 }
 
-const API_URL = 'https://localhost:5000/bezos'
+const API_URL = 'https://localhost:5000/finalexam'
 
 export const fetchBooks = async (
     pageSize: number,

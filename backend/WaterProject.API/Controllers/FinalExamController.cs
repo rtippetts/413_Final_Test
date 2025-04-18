@@ -1,23 +1,23 @@
 ﻿using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using BezosBase.API.Data;
+using FinalExam.API.Data;
 using System.Globalization;
 
-namespace BezosBase.API.Controllers
+namespace FinalExam.API.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class BezosController : ControllerBase
+    public class FinalExamController : ControllerBase
     {
 
-        private BezosDbContext _bezosContext;
-        public BezosController(BezosDbContext temp) => _bezosContext = temp;
+        private FinalExamDbContext _finalExamContext;
+        public FinalExamController(FinalExamDbContext temp) => _finalExamContext = temp;
 
         [HttpGet("AllBooks")]
         public IActionResult GetBooks(int pageHowMany = 10, int pageNum = 1, [FromQuery] List<string>? bookTypes=null)
         {
-            var query = _bezosContext.Books.AsQueryable();
+            var query = _finalExamContext.Books.AsQueryable();
 
             if (bookTypes != null && bookTypes.Any())
             {
@@ -49,7 +49,7 @@ namespace BezosBase.API.Controllers
         [HttpGet("GetBookCategories")]
         public IActionResult GetBookCategories ()
         {
-            var bookCategories = _bezosContext.Books
+            var bookCategories = _finalExamContext.Books
                 .Select(b => b.Category)
                 .Distinct()
                 .ToList();
@@ -60,15 +60,15 @@ namespace BezosBase.API.Controllers
         [HttpPost("AddBook")]
         public IActionResult AddBook([FromBody] Book newBook)
                 {
-                    _bezosContext.Books.Add(newBook);
-                    _bezosContext.SaveChanges();
+                    _finalExamContext.Books.Add(newBook);
+                    _finalExamContext.SaveChanges();
                     return Ok(newBook);
                 }
 
         [HttpPut("UpdateBook/{bookID}")]
         public IActionResult UpdateBook(int BookID, [FromBody] Book updatedBook)
                 {
-                    var existingBook = _bezosContext.Books.Find(BookID);
+                    var existingBook = _finalExamContext.Books.Find(BookID);
 
                     existingBook.Title = updatedBook.Title;
                     existingBook.Author = updatedBook.Author;
@@ -79,8 +79,8 @@ namespace BezosBase.API.Controllers
                     existingBook.PageCount = updatedBook.PageCount;
                     existingBook.Price = updatedBook.Price;
 
-                    _bezosContext.Books.Update(existingBook);
-                    _bezosContext.SaveChanges();
+                    _finalExamContext.Books.Update(existingBook);
+                    _finalExamContext.SaveChanges();
 
                     return Ok(existingBook);
                 }
@@ -90,15 +90,15 @@ namespace BezosBase.API.Controllers
         [HttpDelete("DeleteBook/{bookID}")]
         public IActionResult DeleteBook(int bookID)
             {
-                var book = _bezosContext.Books.Find(bookID);
+                var book = _finalExamContext.Books.Find(bookID);
                 
                 if (book == null)
                 {
                     return NotFound(new { message = "Book not found" });
                 }
                 
-                _bezosContext.Books.Remove(book);
-                _bezosContext.SaveChanges();
+                _finalExamContext.Books.Remove(book);
+                _finalExamContext.SaveChanges();
                 
                 return NoContent();
             }
