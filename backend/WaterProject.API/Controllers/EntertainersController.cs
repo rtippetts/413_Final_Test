@@ -10,10 +10,13 @@ namespace FinalExam.API.Controllers
     [ApiController]
     public class EntertainersController : ControllerBase
     {
-
         private FinalExamDbContext _finalExamContext;
+
+        // Inject the database context via constructor
         public EntertainersController(FinalExamDbContext temp) => _finalExamContext = temp;
 
+        // GET: /Entertainers/AllEntertainers
+        // Returns a list of all entertainers with booking count and most recent booking date
         [HttpGet("AllEntertainers")]
         public IActionResult GetAllEntertainers()
         {
@@ -34,22 +37,24 @@ namespace FinalExam.API.Controllers
             return Ok(entertainers);
         }
 
-
+        // POST: /Entertainers/AddEntertainer
+        // Adds a new entertainer to the database
         [HttpPost("AddEntertainer")]
         public IActionResult AddEntertainer([FromBody] Entertainer newEntertainer)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState); // ensures required fields are filled
+                return BadRequest(ModelState); // Ensures required fields are validated
             }
 
             _finalExamContext.Entertainers.Add(newEntertainer);
             _finalExamContext.SaveChanges();
 
-            return Ok(newEntertainer); // returns the created entertainer object
+            return Ok(newEntertainer); // Returns the newly added entertainer
         }
 
-
+        // PUT: /Entertainers/UpdateEntertainer/{id}
+        // Updates the fields for an existing entertainer
         [HttpPut("UpdateEntertainer/{id}")]
         public IActionResult UpdateEntertainer(int id, [FromBody] Entertainer updatedEntertainer)
         {
@@ -60,6 +65,7 @@ namespace FinalExam.API.Controllers
                 return NotFound($"Entertainer with ID {id} not found.");
             }
 
+            // Update all properties manually
             existingEntertainer.EntStageName = updatedEntertainer.EntStageName;
             existingEntertainer.EntSSN = updatedEntertainer.EntSSN;
             existingEntertainer.EntStreetAddress = updatedEntertainer.EntStreetAddress;
@@ -77,10 +83,24 @@ namespace FinalExam.API.Controllers
             return Ok(existingEntertainer);
         }
 
+        // GET: /Entertainers/{id}
+        // Retrieves a single entertainer by ID
+        [HttpGet("{id}")]
+        public IActionResult GetEntertainerById(int id)
+        {
+            var entertainer = _finalExamContext.Entertainers.Find(id);
 
+            if (entertainer == null)
+            {
+                return NotFound(new { message = $"Entertainer with ID {id} not found." });
+            }
 
+            return Ok(entertainer);
+        }
 
-        [HttpDelete("DeleteEntertainer/{id}")]
+        // DELETE: /Entertainers/{id}
+        // Deletes an entertainer from the database
+        [HttpDelete("{id}")]
         public IActionResult DeleteEntertainer(int id)
         {
             var entertainer = _finalExamContext.Entertainers.Find(id);
@@ -93,10 +113,7 @@ namespace FinalExam.API.Controllers
             _finalExamContext.Entertainers.Remove(entertainer);
             _finalExamContext.SaveChanges();
 
-            return NoContent(); // 204 success without body
+            return NoContent(); // Return 204 No Content if deletion is successful
         }
-
-
-
     }
 }
