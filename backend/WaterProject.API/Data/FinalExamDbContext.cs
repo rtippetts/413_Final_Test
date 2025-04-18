@@ -9,7 +9,9 @@ namespace FinalExam.API.Data
         { 
         }
 
-        public DbSet<Book> Books { get; set; }
+        public DbSet<Entertainer> Entertainers { get; set; }
+        public DbSet<Engagement> Engagements { get; set; }
+
 
     }
 }

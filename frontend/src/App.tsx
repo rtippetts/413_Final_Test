@@ -1,10 +1,8 @@
 import './App.css';
-import BookPage from './pages/BookPage';
+
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
-import PurchasePage from './pages/PurchasePage';
-import CartPage from './pages/CartPage';
-import { CartProvider } from './context/CartContext';
 import AdminBooksPage from './pages/AdminBooksPage';
+import WelcomePage from './pages/WelcomePage';
 
 
 function App() {
@@ -12,17 +10,14 @@ function App() {
   
   return (
   <>
-  <CartProvider>
+
   <Router>
       <Routes>
-        <Route path="/" element={<BookPage />} />
-        <Route path="/purchase/:title/:price/:bookID" element={<PurchasePage />} />
-        <Route path="/books" element={<BookPage />}></Route>
-        <Route path="/cart" element={<CartPage />} ></Route>
-        <Route path="/adminbooks" element={<AdminBooksPage />} />
+        <Route path="/" element={<WelcomePage />} />
+        <Route path="/entertainers" element={<AdminBooksPage />} />
       </Routes>
     </Router>
-  </CartProvider>
+
     
   </>
   )
