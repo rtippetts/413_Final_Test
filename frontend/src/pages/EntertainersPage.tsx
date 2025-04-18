@@ -23,7 +23,7 @@ const EntertainersPage = () => {
   const fetchEntertainers = async () => {
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:4000/Entertainers/AllEntertainers");
+      const response = await fetch("https://finalexam-tippetts-backend-eceadzbncngth7bk.eastus-01.azurewebsites.net/Entertainers/AllEntertainers");
       const data = await response.json();
       setEntertainers(data);
     } catch (err) {

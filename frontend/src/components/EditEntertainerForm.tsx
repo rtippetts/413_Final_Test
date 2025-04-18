@@ -41,7 +41,7 @@ const EditEntertainerForm = ({
     e.preventDefault();
     try {
       const response = await fetch(
-        `http://localhost:4000/Entertainers/UpdateEntertainer/${formData.entertainerID}`,
+        `https://finalexam-tippetts-backend-eceadzbncngth7bk.eastus-01.azurewebsites.net/Entertainers/UpdateEntertainer/${formData.entertainerID}`,
         {
           method: "PUT",
           headers: {

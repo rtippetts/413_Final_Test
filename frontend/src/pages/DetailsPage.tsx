@@ -17,7 +17,7 @@ const EntertainerDetailsPage = () => {
   const fetchEntertainer = async () => {
     try {
       const response = await fetch(
-        `http://localhost:4000/Entertainers/${id}`
+        `https://finalexam-tippetts-backend-eceadzbncngth7bk.eastus-01.azurewebsites.net/Entertainers/${id}`
       );
       if (!response.ok) throw new Error("Entertainer not found");
       const data = await response.json();
@@ -42,7 +42,7 @@ const EntertainerDetailsPage = () => {
 
     try {
       const res = await fetch(
-        `http://localhost:4000/Entertainers/${entertainer.entertainerID}`,
+        `https://finalexam-tippetts-backend-eceadzbncngth7bk.eastus-01.azurewebsites.net/Entertainers/${entertainer.entertainerID}`,
         { method: "DELETE" }
       );
 

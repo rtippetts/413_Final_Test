@@ -47,7 +47,7 @@ const NewEntertainerForm = ({ onSuccess, onCancel }: NewEntertainerFormProps) =>
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:4000/Entertainers/AddEntertainer", {
+      const response = await fetch("https://finalexam-tippetts-backend-eceadzbncngth7bk.eastus-01.azurewebsites.net/Entertainers/AddEntertainer", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
