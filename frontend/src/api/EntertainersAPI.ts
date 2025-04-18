@@ -1,7 +1,7 @@
 import { Entertainer } from "../types/Entertainer.ts";
 
 // Base URL pointing to the backend Entertainers API
-const API_URL = "https://localhost:4000/Entertainers";
+const API_URL = "https://finalexam-tippetts-backend-eceadzbncngth7bk.eastus-01.azurewebsites.net/Entertainers";
 
 // 🔽 Fetches a list of all entertainers, including booking stats
 export const fetchEntertainers = async (): Promise<Entertainer[]> => {
